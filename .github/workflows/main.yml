@@ -1,31 +1,54 @@
-name: PublishForCICD
-'on':
-  workflow_dispatch: null
+name: .NET CI/CD Pipeline
+
+on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+
 env:
-AZURE_WEBAPP_NAME: apptestdemo
-AZURE_WEBAPP_PACKAGE_PATH: '.'
+  AZURE_WEBAPP_NAME: apptestdemo
+  AZURE_WEBAPP_PACKAGE_PATH: .
+
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
-      - name: Restore dependencies
-        run: dotnet restore ./githubdemo.csproj
-      - name: Build
-        run: dotnet build ./githubdemo.csproj --configuration Release --no-restore
-      - name: Publish
-        run: dotnet publish ./githubdemo.csproj -c Release -o ./publish
-      - name: deployment
-        uses: azure/webapps-deploy@v2
-        with:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish -c Release -o publish
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-app
+        path: publish
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: dotnet-app
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v3
+      with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
