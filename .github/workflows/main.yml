@@ -5,7 +5,9 @@ on: # Events that trigger the workflow.
   push: # Triggers the workflow on a push event.
     branches: # Specifies which branches will trigger the workflow.
       - main # The 'main' branch.you can change branch as you need
-
+env:
+azure_webApp_name: apptestdemo
+azure_webApp_packagePath: "./publish"
 
 jobs: # Defines the jobs in the workflow.
   publish: # The 'publish' job.
@@ -27,7 +29,7 @@ jobs: # Defines the jobs in the workflow.
         run: dotnet build ./githubdemo.csproj --configuration Release --no-restore
 
       - name: Publish # Publishes the project's build artifacts.
-        run: dotnet publish ./githubdemo.csproj --configuration Release --no-build
+        run: dotnet publish ./githubdemo.csproj --configuration Release --no-build --output "${{env.azure_webApp_packagePath}}"
         
       - name: deployment 
         uses: azure/webapps-deploy@v2
