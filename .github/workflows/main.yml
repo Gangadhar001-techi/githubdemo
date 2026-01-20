@@ -1,40 +1,31 @@
-name: PublishForCICD # Name of the GitHub Actions workflow.
-
-on: # Events that trigger the workflow.
-  workflow_dispatch: # Allows manual triggering of the workflow.
-  push: # Triggers the workflow on a push event.
-    branches: # Specifies which branches will trigger the workflow.
-      - main # The 'main' branch.you can change branch as you need
-env:
+name: PublishForCICD
+'on':
+  workflow_dispatch: null
+  push:
+    branches:
+      - main
+env: 
 AZURE_WEBAPP_NAME: apptestdemo
-AZURE_WEBAPP_PACKAGE_PATH: "./publish"
-
-jobs: # Defines the jobs in the workflow.
-  publish: # The 'publish' job.
-    runs-on: ubuntu-latest # The type of runner that the job will run on.
-
-    steps: # Steps for the 'publish' job.
-      - name: Checkout code # Checks out the repository code.
+AZURE_WEBAPP_PACKAGE_PATH: ./publish
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Setup .NET # Sets up the .NET environment.
+      - name: Setup .NET
         uses: actions/setup-dotnet@v3
-        with: 
-          dotnet-version: '8.0.x' # The .NET version to use.
-
-      - name: Restore dependencies # Restores the NuGet packages.
-        run: dotnet restore ./githubdemo.csproj
-
-      - name: Build # Builds the project.
-        run: dotnet build ./githubdemo.csproj --configuration Release --no-restore
-
-      - name: Publish # Publishes the project's build artifacts.
-        run: dotnet publish ./githubdemo.csproj -c Release -o ./publish
-        
-      - name: deployment 
-        uses: azure/webapps-deploy@v2
         with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-       
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore ./githubdemo.csproj
+      - name: Build
+        run: dotnet build ./githubdemo.csproj --configuration Release --no-restore
+      - name: Publish
+        run: dotnet publish ./githubdemo.csproj -c Release -o ./publish
+      - name: deployment
+        uses: azure/webapps-deploy@v2
+        with: null
+        app-name: '${{ env.AZURE_WEBAPP_NAME }}'
+        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+        publish-profile: '${{ secrets.AZURE_PUBLISH_PROFILE }}'
