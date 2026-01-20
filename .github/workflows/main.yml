@@ -34,7 +34,7 @@ jobs: # Defines the jobs in the workflow.
       - name: deployment 
         uses: azure/webapps-deploy@v2
         with:
-        app-name:${{env.azurewebApp-name}}
-        package:"${{env.azure_webApp_packagePath}}"
-        publish-profile:${{secrets.AZURE_PUBLISH_PROFILE}}
+        app-name: ${{env.azurewebApp-name}}
+        package: "${{env.azure_webApp_packagePath}}"
+        publish-profile: ${{secrets.AZURE_PUBLISH_PROFILE}}
        
