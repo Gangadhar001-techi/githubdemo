@@ -28,3 +28,11 @@ jobs: # Defines the jobs in the workflow.
 
       - name: Publish # Publishes the project's build artifacts.
         run: dotnet publish ./githubdemo.csproj --configuration Release --no-build
+        
+      - name: deployment 
+        uses: azure/webapps-deploy@v2
+        with:
+        app-name:${{env.azurewebApp-name}}
+        package:"${{env.azure_webApp_packagePath}}"
+        publish-profile:${{secrets.AZURE_PUBLISH_PROFILE}}
+       
