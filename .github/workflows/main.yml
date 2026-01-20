@@ -21,10 +21,10 @@ jobs: # Defines the jobs in the workflow.
           dotnet-version: '8.0.x' # The .NET version to use.
 
       - name: Restore dependencies # Restores the NuGet packages.
-        run: dotnet restore ./dotnetapp.sln
+        run: dotnet restore ./githubdemo.csproj
 
       - name: Build # Builds the project.
-        run: dotnet build ./dotnetapp.sln --configuration Release --no-restore
+        run: dotnet build ./githubdemo.csproj --configuration Release --no-restore
 
       - name: Publish # Publishes the project's build artifacts.
         run: dotnet publish ./dotnetapp.sln --configuration Release --no-build
