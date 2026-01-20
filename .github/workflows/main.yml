@@ -27,4 +27,4 @@ jobs: # Defines the jobs in the workflow.
         run: dotnet build ./dotnetapp.sln --configuration Release --no-restore
 
       - name: Publish # Publishes the project's build artifacts.
-        run: dotnet publish ./ChattingApp.sln --configuration Release --no-build
+        run: dotnet publish ./dotnetapp.sln --configuration Release --no-build
