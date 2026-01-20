@@ -6,8 +6,8 @@ on: # Events that trigger the workflow.
     branches: # Specifies which branches will trigger the workflow.
       - main # The 'main' branch.you can change branch as you need
 env:
-azure_webApp_name: apptestdemo
-azure_webApp_packagePath: "./publish"
+AZURE_WEBAPP_NAME: apptestdemo
+AZURE_WEBAPP_PACKAGE_PATH: "./publish"
 
 jobs: # Defines the jobs in the workflow.
   publish: # The 'publish' job.
@@ -34,7 +34,7 @@ jobs: # Defines the jobs in the workflow.
       - name: deployment 
         uses: azure/webapps-deploy@v2
         with:
-        app-name: ${{env.azurewebApp-name}}
-        package: "${{env.azure_webApp_packagePath}}"
-        publish-profile: ${{secrets.AZURE_PUBLISH_PROFILE}}
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
        
