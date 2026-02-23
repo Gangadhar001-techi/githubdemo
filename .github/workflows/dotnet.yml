@@ -1,8 +1,34 @@
-name: hello-world
-'on': push
-jobs:
-  my-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: my-step
-        run: echo "Hello World!"
+# echo-practice.yml
+
+simple_message: "Hello, YAML!"
+
+multiline_message: |
+  This is a multi-line message.
+  YAML preserves line breaks
+  when using the pipe symbol.
+
+folded_message: >
+  This is a folded message.
+  Line breaks will be converted
+  into spaces.
+
+echo_examples:
+  - id: 1
+    message: "Echo: Learning YAML is fun!"
+  - id: 2
+    message: "Echo: Practice makes perfect."
+  - id: 3
+    message: "Echo: Keep going!"
+
+nested:
+  level1:
+    level2:
+      message: "Echo: Nested message example"
+
+boolean_example:
+  enabled: true
+  note: "Echo is enabled"
+
+number_example:
+  repeat: 3
+  message: "Echo this 3 times"
